@@ -1,9 +1,12 @@
+// import 'dart:html';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+// import 'package:flutter_blue_plus/gen/flutterblueplus.pbserver.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ScanDevicesPage extends StatefulWidget {
   const ScanDevicesPage({super.key});
@@ -57,16 +60,17 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBluePlus.instance.scanResults,
                 initialData: const [],
-                builder: (c, snapshot) => Column(
+                builder: (c, snapshot) => StaggeredGrid.count(
+                  crossAxisCount: 10,
                   children: snapshot.data!
                       .map(
-                        (r) => ScanResultTile(
+                        (r) => NameTag(
                           result: r,
-                          onTap: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            r.device.connect();
-                            return DeviceScreen(device: r.device);
-                          })),
+                          // onTap: () => Navigator.of(context)
+                          //     .push(MaterialPageRoute(builder: (context) {
+                          //   r.device.connect();
+                          //   return DeviceScreen(device: r.device);
+                          // })),
                         ),
                       )
                       .toList(),
@@ -226,11 +230,11 @@ class DeviceScreen extends StatelessWidget {
                       ),
                       const IconButton(
                         icon: SizedBox(
+                          width: 18.0,
+                          height: 18.0,
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(Colors.grey),
                           ),
-                          width: 18.0,
-                          height: 18.0,
                         ),
                         onPressed: null,
                       )
@@ -277,6 +281,32 @@ class DeviceScreen extends StatelessWidget {
     }
     subscription.cancel();
     // Device disconnected, stopping RSSI stream
+  }
+}
+
+class NameTag extends StatelessWidget {
+  const NameTag(
+      {required this.result,
+      // required this.deviceName,
+      super.key});
+  // final String deviceName;
+  final ScanResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+        color: Colors.deepPurple,
+        width: 1,
+      )),
+      height: 24,
+      width: 48,
+      // color: Colors.white,
+      child: Center(
+        child: Text(result.device.id.toString()),
+      ),
+    );
   }
 }
 

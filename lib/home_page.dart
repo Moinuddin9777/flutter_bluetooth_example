@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_blue_plus/gen/flutterblueplus.pb.dart';
+import 'package:flutter_bluetooth_example/area_scan_ui_page.dart';
+import 'package:flutter_bluetooth_example/circular_widgets_example.dart';
 import 'package:flutter_bluetooth_example/scan_devices_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -46,7 +48,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     : showBluetoothIsOffBanner(context);
               },
               icon: FaIcon(FontAwesomeIcons.bluetooth),
-              label: Text('Scan for devices'))
+              label: Text('Scan for devices')),
+          ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ScanPageTwo()));
+              },
+              icon: FaIcon(FontAwesomeIcons.penRuler),
+              label: Text('Layout')),
+          ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ExamplePage()));
+              },
+              icon: FaIcon(FontAwesomeIcons.penRuler),
+              label: Text('Layout')),
         ]),
       ),
     );
@@ -77,7 +93,7 @@ Future<dynamic> showBluetoothIsOffBanner(BuildContext context) {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: FaIcon(FontAwesomeIcons.xmark))
+                  icon: FaIcon(FontAwesomeIcons.xmark)),
             ],
           ));
 }
